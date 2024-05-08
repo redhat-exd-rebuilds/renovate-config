@@ -1,0 +1,81 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Default preset for use with Renovate's repos",
+  "extends": [
+    "config:best-practices",
+    ":maintainLockFilesWeekly",
+    ":enablePreCommit",
+    "group:all",
+    "regexManagers:dockerfileVersions",
+    "schedule:weekly",
+    "workarounds:supportRedHatImageVersion",
+    ":gitSignOff",
+    ":pinDigestsDisabled"
+  ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Patch and digest updates",
+      "matchUpdateTypes": [
+        "patch",
+        "digest"
+      ],
+      "groupName": "Auto merged updates",
+      "automerge": true,
+      "platformAutomerge": true
+    },
+    {
+      "description": "pre-commit-renovate plugin",
+      "matchPackageNames": [
+        "maxbrunet/pre-commit-renovate"
+      ],
+      "groupName": "Auto merged updates",
+      "automerge": true,
+      "platformAutomerge": true
+    },
+    {
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchDepTypes": [
+        "indirect"
+      ],
+      "enabled": true
+    },
+    {
+      "description": "Group go updates",
+      "matchManagers": [
+        "gomod"
+      ],
+      "groupName": "go updates",
+      "postUpdateOptions": [
+        "gomodUpdateImportPaths",
+        "gomodTidy"
+      ]
+    },
+    {
+      "description": "Override the docker:pinDigests preset provided by config:best-practices",
+      "matchDatasources": [
+        "docker"
+      ],
+      "pinDigests": false
+    },
+    {
+      "description": "Override the helpers:pinGitHubActionDigests preset provided by config:best-practices",
+      "matchDepTypes": [
+        "action"
+      ],
+      "pinDigests": false
+    },
+    {
+      "description": "Don't suggest bumping to unstable fedora release",
+      "matchDatasources": ["endoflife-date"],
+      "matchPackageNames": ["fedora"],
+      "versioning": "docker"
+    }
+  ],
+  "configMigration": true,
+  "onboardingNoDeps": true
+}
