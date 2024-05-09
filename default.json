@@ -15,18 +15,6 @@
   "git-submodules": {
     "enabled": true
   },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Update fedora version",
-      "fileMatch": ["(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$", "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"],
-      "matchStrings": [
-          "#\\s*renovate:\\s*datasource=(?<datasource>.*?) packageName=(?<packageName>.*?)( versioning=(?<versioning>.*?))?\\sFROM\\s(?<depName>.*?):(?<currentValue>.*)",
-          "#\\s+renovate:\\s+datasource=(?<datasource>.*?) packageName=(?<packageName>.*?)( versioning=(?<versioning>.*?))?\\s+container: (?<depName>.*?):(?<currentValue>.*)"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{/if}}"
-    }
-  ],
   "packageRules": [
     {
       "description": "Patch and digest updates",
@@ -83,9 +71,21 @@
     },
     {
       "description": "Don't suggest bumping to unstable fedora release",
-      "matchDatasources": ["endoflife-date"],
-      "matchPackageNames": ["fedora"],
-      "versioning": "docker"
+      "matchDepNames": ["quay.io/fedora/fedora"],
+      "matchManagers": ["dockerfile","github-actions"],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update fedora version",
+      "fileMatch": ["(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$", "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"],
+      "matchStrings": [
+          "#\\s*renovate:\\s*datasource=(?<datasource>.*?) packageName=(?<packageName>.*?)( versioning=(?<versioning>.*?))?\\sFROM\\s(?<depName>.*?):(?<currentValue>.*)",
+          "#\\s+renovate:\\s+datasource=(?<datasource>.*?) packageName=(?<packageName>.*?)( versioning=(?<versioning>.*?))?\\s+container: (?<depName>.*?):(?<currentValue>.*)"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{/if}}"
     }
   ],
   "configMigration": true,
