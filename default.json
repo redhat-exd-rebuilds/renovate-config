@@ -12,6 +12,9 @@
     ":gitSignOff",
     ":pinDigestsDisabled"
   ],
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "prCreation": "not-pending",
   "git-submodules": {
     "enabled": true
   },
